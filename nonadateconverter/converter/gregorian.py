@@ -33,7 +33,8 @@ class GregorianConverter(GregorianAbstract):
         gregorian_date = jdatetime.date.fromgregorian(year=self._year, month=self._month, day=self._day)
         return gregorian_date.year, gregorian_date.month, gregorian_date.day
 
-    def now(self) -> Tuple:
+    @classmethod
+    def now(cls) -> Tuple:
         now = datetime.now()
         return now.year, now.month, now.day
 

@@ -2,8 +2,10 @@ from abc import ABC, abstractmethod
 
 
 class Abstract(ABC):
+
+    @classmethod
     @abstractmethod
-    def now(self):
+    def now(cls):
         ...
 
     @abstractmethod

@@ -36,7 +36,8 @@ class JalaliConverter(JalaliAbstract):
         time = JalaliDate(self._year, self._month, self._day).to_gregorian()
         return time.year, time.month, time.day
 
-    def now(self) -> Tuple:
+    @classmethod
+    def now(cls) -> Tuple:
         now = JalaliDate.today()
         return now.year, now.month, now.day
 

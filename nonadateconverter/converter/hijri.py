@@ -36,14 +36,6 @@ class HijriConverter(HijriAbstract):
         jalali_date = JalaliDate.to_jalali(year, month, day)
         return jalali_date.year, jalali_date.month, jalali_date.day
 
-    def now(self) -> Tuple:
-        # Get today's date
-        today = date.today()
-
-        # Convert today's Gregorian date to Hijri
-        hijri_today = Gregorian(today.year, today.month, today.day).to_hijri()
-        return hijri_today.year, hijri_today.month, hijri_today.day
-
     def weekday(self) -> str:
         hijri_date = Hijri(self._year, self._month, self._day).to_gregorian()
 
@@ -73,3 +65,12 @@ class HijriConverter(HijriAbstract):
         remaining_days = (days % 365) % 30
 
         return years, months, remaining_days
+
+    @classmethod
+    def now(cls) -> Tuple:
+        # Get today's date
+        today = date.today()
+
+        # Convert today's Gregorian date to Hijri
+        hijri_today = Gregorian(today.year, today.month, today.day).to_hijri()
+        return hijri_today.year, hijri_today.month, hijri_today.day
