@@ -14,21 +14,9 @@ class JalaliConverter(JalaliAbstract):
             month=None,
             day=None
     ) -> None:
-        if year is None and month is None and day is None:
-            now = JalaliDate.today()
-            self._year = now.year
-            self._month = now.month
-            self._day = now.day
-        else:
-            self._year = year
-            self._month = month
-            self._day = day
-        try:
-            self._year = int(self._year)
-            self._month = int(self._month)
-            self._day = int(self._day)
-        except ValueError:
-            raise ValueError('Invalid year, month, day type, allowed types are integer and string')
+        if not year or not month or not day:
+            raise TypeError("missing 3 required positional arguments: 'year', 'month', and 'day'")
+        super().__init__(year, month, day)
 
     def jalali_to_hijri(self) -> Tuple:
         try:
@@ -41,7 +29,7 @@ class JalaliConverter(JalaliAbstract):
 
     def jalali_to_gregorian(self) -> Tuple:
         try:
-            time = JalaliDate(self._year, self._month, self._day).to_gregorian()
+            time = JalaliDate(self.year, self.month, self.day).to_gregorian()
             return time.year, time.month, time.day
         except ValueError:
             raise ValueError
@@ -53,15 +41,15 @@ class JalaliConverter(JalaliAbstract):
 
     def weekday(self) -> str:
         try:
-            time = JalaliDateTime(self._year, self._month, self._day, tzinfo=pytz.utc).strftime("%c")
+            time = JalaliDateTime(self.year, self.month, self.day, tzinfo=pytz.utc).strftime("%c")
             return time.split(' ')[0]
         except ValueError:
             raise ValueError
 
     def elapsedtime(self) -> Tuple:
         try:
-            date1 = JalaliDate(self._year, self._month, self._day).to_gregorian()
-            now = JalaliDate(self._year, self._month, self._day).today().to_gregorian()
+            date1 = JalaliDate(self.year, self.month, self.day).to_gregorian()
+            now = JalaliDate(self.year, self.month, self.day).today().to_gregorian()
             date2 = date(now.year, now.month, now.day)
             delta = date2 - date1
             days = delta.days

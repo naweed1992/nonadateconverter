@@ -12,25 +12,13 @@ class GregorianConverter(GregorianAbstract):
             month=None,
             day=None
     ) -> None:
-        if year is None and month is None and day is None:
-            now = datetime.now()
-            self._year = now.year
-            self._month = now.month
-            self._day = now.day
-        else:
-            self._year = year
-            self._month = month
-            self._day = day
-        try:
-            self._year = int(self._year)
-            self._month = int(self._month)
-            self._day = int(self._day)
-        except ValueError:
-            raise ValueError('Invalid year, month, day type, allowed types are integer and string')
+        if not year or not month or not day:
+            raise TypeError("missing 3 required positional arguments: 'year', 'month', and 'day'")
+        super().__init__(year, month, day)
 
     def gregorian_to_hijri(self) -> Tuple:
         try:
-            gregorian_date = Gregorian(self._year, self._month, self._day)
+            gregorian_date = Gregorian(self.year, self.month, self.day)
             hijri_date = gregorian_date.to_hijri()
             return hijri_date.year, hijri_date.month, hijri_date.day
         except ValueError:
@@ -38,7 +26,7 @@ class GregorianConverter(GregorianAbstract):
 
     def gregorian_to_jalali(self):
         try:
-            gregorian_date = jdatetime.date.fromgregorian(year=self._year, month=self._month, day=self._day)
+            gregorian_date = jdatetime.date.fromgregorian(year=self.year, month=self.month, day=self.day)
             return gregorian_date.year, gregorian_date.month, gregorian_date.day
         except ValueError:
             raise ValueError
@@ -59,7 +47,7 @@ class GregorianConverter(GregorianAbstract):
 
     def elapsedtime(self) -> Tuple:
         try:
-            date1 = datetime(self._year, self._month, self._day)
+            date1 = datetime(self.year, self.month, self.day)
             now = datetime.now()
             date2 = datetime(now.year, now.month, now.day)
             delta = date2 - date1
